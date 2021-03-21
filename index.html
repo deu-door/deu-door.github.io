@@ -81,39 +81,27 @@
 		}
 
 		.wave.wave1 {
-			animation: animate-wave-1 30s linear infinite;
+			animation: animate-wave 30s linear infinite;
 			opacity: 0.4;
 		}
 
 		.wave.wave2 {
-			animation: animate-wave-2 15s linear infinite;
+			animation: animate-wave 15s linear infinite;
 			animation-delay: -5s;
 			opacity: 0.6;
 			bottom: -20px;
 		}
 
 		.wave.wave3 {
-			animation: animtate-wave-3 20s linear infinite;
-			animation-delay: -8s;
+			animation: animate-wave 80s linear infinite;
 			opacity: 0.8;
 			bottom: -10px;
 		}
 
-		@keyframes animate-wave-1 {
+		@keyframes animate-wave {
 			0% { background-position-x: 0; }
 			100% { background-position-x: 1000px; }
 		}
-
-		@keyframes animate-wave-2 {
-			0% { background-position-x: 0; }
-			100% { background-position-x: 1000px; }
-		}
-
-		@keyframes animate-wave-3 {
-			0% { background-position-x: 0; }
-			100% { background-position-x: 1000px; }
-		}
-
 		#feature {
 			display: inline-block;
 			font-weight: bold;
