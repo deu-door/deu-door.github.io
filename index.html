@@ -4,9 +4,293 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+
+	<link rel="icon" href="icon.png" />
+
+	<title>Door Desktop</title>
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css" />
+
+	<style>
+		html, body, div, ul {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			width: 100vw;
+			height: 100vh;
+			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: NanumSquareRound;
+		}
+
+		header {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		h1,h2,h3,h4,h5,h6 {
+			font-family: NanumSquare;
+		}
+
+		.icon {
+			width: 128px;
+			height: 128px;
+			animation: animate-icon-shadow linear 6s infinite;
+		}
+
+		@keyframes animate-icon-shadow {
+			0% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2)); }
+			50% { filter: drop-shadow(0 0 45px rgba(255, 255, 255, 0.7)); }
+			100% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2)); }
+		}
+
+		.background {
+			position: absolute;
+			z-index: -100;
+			width: 100vw;
+			height: 100vh;
+			background: linear-gradient(#2F71E9, 80%, #1657d0);
+			overflow: hidden;
+		}
+
+		.wave {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 100px;
+			background: url(wave.png);
+			background-size: 1000px 100px;
+		}
+
+		.wave.wave1 {
+			animation: animate-wave-1 30s linear infinite;
+			opacity: 0.4;
+		}
+
+		.wave.wave2 {
+			animation: animate-wave-2 15s linear infinite;
+			animation-delay: -5s;
+			opacity: 0.6;
+			bottom: -20px;
+		}
+
+		.wave.wave3 {
+			animation: animtate-wave-3 20s linear infinite;
+			animation-delay: -8s;
+			opacity: 0.8;
+			bottom: -10px;
+		}
+
+		@keyframes animate-wave-1 {
+			0% { background-position-x: 0; }
+			100% { background-position-x: 1000px; }
+		}
+
+		@keyframes animate-wave-2 {
+			0% { background-position-x: 0; }
+			100% { background-position-x: 1000px; }
+		}
+
+		@keyframes animate-wave-3 {
+			0% { background-position-x: 0; }
+			100% { background-position-x: 1000px; }
+		}
+
+		#feature {
+			display: inline-block;
+			font-weight: bold;
+		}
+
+		button {
+			background: transparent;
+			border-radius: 12px;
+			border: 1px solid white;
+			color: white;
+			padding: 12px 22px;
+			font-size: 1.2rem;
+			transition: all 0.15s;
+			outline: none;
+		}
+
+		button:hover {
+			background: white;
+			color: black;
+			cursor: pointer;
+		}
+
+		ul {
+			list-style: none;
+		}
+
+		footer {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		footer > ul > a {
+			font-size: 0.9rem;
+			color:rgba(255, 255, 255, 0.5);
+		}
+
+		footer > ul > a + a {
+			padding-left: 0.3rem;
+		}
+
+		footer > .author {
+			font-size: 0.8rem;
+			color:rgba(255, 255, 255, 0.5);
+		}
+	</style>
+
+	<script type="text/javascript">
+		String.prototype.replaceAt = function(index, replacement) {
+			return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+		}
+
+		function shuffle(array) {
+			var currentIndex = array.length, temporaryValue, randomIndex;
+
+			// While there remain elements to shuffle...
+			while (0 !== currentIndex) {
+
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex -= 1;
+
+				// And swap it with the current element.
+				temporaryValue = array[currentIndex];
+				array[currentIndex] = array[randomIndex];
+				array[randomIndex] = temporaryValue;
+			}
+
+			return array;
+		}
+
+		const randomCharacters = "&#*+%?£@§$";
+
+		function createRandomString(length) {
+			let randomText = '';
+			while (randomText.length < length) {
+				randomText += randomCharacters.charAt(Math.floor(Math.random() * randomCharacters.length));
+			}
+
+			return randomText;
+		}
+
+		function* generateTextFadeIn(text) {
+			for(let i = 0; i <= text.length; i++) {
+				yield createRandomString(i);
+			}
+
+			// frames that fade in
+			let chunks = Math.max(1, ~~(text.length / 8));
+			let counter = 0;
+
+			const exposed = new Set();
+			
+			for(let index of shuffle([...Array(text.length)].map((_, i) => i))) {
+				counter++;
+				if (counter === chunks) {
+					counter = 0;
+
+					yield createRandomString(text.length).split('').map((char, index) => {
+						return exposed.has(index) ? text[index] : char;
+					}).join('');
+				}
+				exposed.add(index);
+			}
+
+			yield text;
+		}
+
+		function delay(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+
+		document.addEventListener('DOMContentLoaded', async () => {
+			const messages = [...document.getElementById('feature').getElementsByTagName('p')].map(p => p.innerText.trim());
+
+			document.getElementById('feature').innerHTML = '';
+
+			while (true) {
+				for(let message of messages){
+					const frames = [...generateTextFadeIn(message)];
+					
+					for(const frame of frames) {
+						document.getElementById('feature').innerText = frame;
+						await delay(30);
+					}
+
+					await delay(2000);
+
+					for(const frame of frames.reverse()) {
+						document.getElementById('feature').innerText = frame;
+						await delay(30);
+					}
+				}
+			}
+		});
+	</script>
 </head>
 <body>
-	TEST PAGE
+	<section class="background">
+		<div class="wave wave1"></div>
+		<div class="wave wave2"></div>
+		<div class="wave wave3"></div>
+	</section>
+
+	<article>
+		<header>
+			<img class="icon" src="icon.png" />
+
+			<div style="height: 1rem"></div>
+
+			<h1>Door Desktop</h1>
+
+			<div style="height: 0.8rem"></div>
+
+			<div>
+				Door Desktop으로 
+				<div id="feature">
+					<p>더 직관적인 UI를 사용하세요!</p>
+					<p>더 빠른 속도를 경험해보세요!</p>
+					<p>자동 로그인을 사용해보세요!</p>
+					<p>한번에 모든 게시물을 불러오세요!</p>
+					<p>과제의 제출 기간을 놓치지 마세요!</p>
+					<p>온라인강의 출석을 놓치지 마세요!</p>
+				</div>
+			</div>
+
+			<div style="height: 2rem"></div>
+
+			<a target="_blank" href="https://github.com/deu-door/door-desktop/releases">
+				<button>
+					다운로드
+				</button>
+			</a>
+
+			<div style="height: 2rem"></div>
+
+			<footer>
+				<ul>
+					<a target="_blank" href="http://door.deu.ac.kr">Official Door</a>
+					<a target="_blank" href="https://github.com/deu-door/door-desktop">GitHub</a>
+				</ul>
+
+				<div style="height: 0.2rem"></div>
+
+				<p class="author">Authored by solo5star</p>
+			</footer>
+		</header>
+	</article>
 </body>
 </html>
