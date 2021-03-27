@@ -238,6 +238,18 @@
 				}
 			}
 		});
+
+		async function loadDownloadCount() {
+			const releases = await (await fetch('https://api.github.com/repos/deu-door/door-desktop/releases')).json();
+
+			const latest = releases[0];
+			const file = latest.assets.find(asset => asset.name.endsWith('.exe'));
+
+			document.getElementById('download_count').src = document.getElementById('download_count').src.replace(encodeURIComponent('{version}'), latest.tag_name).replace(encodeURIComponent('{downloads}'), file.download_count);
+			document.getElementById('download_url').href = file.browser_download_url;
+		}
+
+		loadDownloadCount();
 	</script>
 </head>
 <body>
@@ -271,7 +283,7 @@
 
 			<div style="height: 2rem"></div>
 
-			<a target="_blank" href="https://github.com/deu-door/door-desktop/releases/latest">
+			<a id="download_url" target="_blank" href="https://github.com/deu-door/door-desktop/releases/latest">
 				<button>
 					다운로드
 				</button>
@@ -281,6 +293,7 @@
 
 			<div>
 				<img src="https://img.shields.io/github/v/release/deu-door/door-desktop.svg" />
+				<img id="download_count" src="https://img.shields.io/badge/downloads%40{version}-{downloads}-brightgreen" />
 			</div>
 
 			<div style="height: 0.7rem"></div>
